@@ -665,25 +665,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77306f1606b644ce1bbf203243758908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parcelHoleCount: 16
-  parcelHolePositions:
-  - {x: 2, y: 2}
-  - {x: 5, y: 2}
-  - {x: 8, y: 2}
-  - {x: 11, y: 2}
-  - {x: 2, y: 5}
-  - {x: 5, y: 5}
-  - {x: 8, y: 5}
-  - {x: 11, y: 5}
-  - {x: 2, y: 8}
-  - {x: 5, y: 8}
-  - {x: 8, y: 8}
-  - {x: 11, y: 8}
-  - {x: 2, y: 11}
-  - {x: 5, y: 11}
-  - {x: 8, y: 11}
-  - {x: 11, y: 11}
-  bots: []
 --- !u!4 &824940310
 Transform:
   m_ObjectHideFlags: 0

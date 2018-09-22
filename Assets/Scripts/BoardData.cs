@@ -14,26 +14,41 @@ public class BoardData : MonoBehaviour
         WalkingArea
     }
 
-    public const int botNum = 10;
-    public const int width = 14;
-    public const int height = 14;
-    public const float gridScale = 1;
+    public const int botNum = 8;
+    public const int width = 11;
+    public const int height = 11;
+    //public const int width = 14;
+    //public const int height = 14;
+    public const float gridScale = 1.2f;
 
     private const string boardObjectStringMap =
-        ".............." +
-        ".............." +
-        "..x..x..x..x.." +
-        ".............." +
-        ".............." +
-        "..x..x..x..x.." +
-        ".............." +
-        ".............." +
-        "..x..x..x..x.." +
-        ".............." +
-        ".............." +
-        "..x..x..x..x.." +
-        ".............." +
-        "______________";
+        "..........." +
+        "..........." +
+        "..x..x..x.." +
+        "..........." +
+        "..........." +
+        "..x..x..x.." +
+        "..........." +
+        "..........." +
+        "..x..x..x.." +
+        "..........." +
+        "___________";
+
+    //private const string boardObjectStringMap =
+        //".............." +
+        //".............." +
+        //"..x..x..x..x.." +
+        //".............." +
+        //".............." +
+        //"..x..x..x..x.." +
+        //".............." +
+        //".............." +
+        //"..x..x..x..x.." +
+        //".............." +
+        //".............." +
+        //"..x..x..x..x.." +
+        //".............." +
+        //"______________";
 
     //[SerializeField]
     private CellType[,] cellMap = new CellType[height,width];
@@ -49,6 +64,7 @@ public class BoardData : MonoBehaviour
         instance = this;
         parcelHoleCount = 0;
         parcelHolePositions = new List<Vector2Int>();
+        bots = new List<ParcelBot>();
 
         for (int i = 0; i < height; i++)
         {

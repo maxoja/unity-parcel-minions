@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 [RequireComponent(typeof(BoardData))]
 public class BotRouter : MonoBehaviour
@@ -18,37 +19,43 @@ public class BotRouter : MonoBehaviour
         new Vector2Int(0, 1) 
     };
 
-    public Vector2Int RequestNextStep(ParcelBot bot)
+    public IEnumerator RequestNextStep(ParcelBot bot)
     {
         Vector2Int target = bot.GetTarget();
         Vector2Int current = bot.GetCurrent();
 
-        Vector2Int nextStep = CalculateNextStep(bot, current, target);
-
-        return nextStep;
+        yield return StartCoroutine(CalculateNextStep(bot, current, target));
         
     }
 
-    private Vector2Int CalculateNextStep(ParcelBot bot, Vector2Int current, Vector2Int target)
+    private IEnumerator CalculateNextStep(ParcelBot bot, Vector2Int current, Vector2Int target)
     {
         FetchTraverseMap(bot);
+        //yield return null;
         if (traverseMap[target.y, target.x] == -2)
-            return current;
+        {
+            bot.SetNextStep(current);
+            yield break;
+        }
+
         traverseMap[current.y, current.x] = 0;
         traverseQueue.Enqueue(current);
 
         while(traverseQueue.Count > 0)
         {
             Vector2Int now = traverseQueue.Dequeue();
-            foreach (Vector2Int next in GetNextPossibleDestinations(now))
-                traverseQueue.Enqueue(next);
+            AddPossibleNextStepToQueue(now);
             traverseMap[now.y, now.x] = GetBestValueFromAround(now)+1;
+            //yield return null;
         }
 
         //DebugTraverseMap();
 
         if (traverseMap[target.y, target.x] < 0)
-            return current;
+        {
+            bot.SetNextStep(current);
+            yield break;
+        }
         
         Vector2Int tracker = target;
         Vector2Int prev = tracker;
@@ -58,7 +65,7 @@ public class BotRouter : MonoBehaviour
             tracker = GetNextBackStep(tracker);
         }
 
-        return prev;
+        bot.SetNextStep(prev);
     }
 
     private void FetchTraverseMap(ParcelBot bot)
@@ -97,9 +104,8 @@ public class BotRouter : MonoBehaviour
         Debug.Log(r);   
     }
 
-    private List<Vector2Int> GetNextPossibleDestinations(Vector2Int current)
+    private void AddPossibleNextStepToQueue(Vector2Int current)
     {
-        List<Vector2Int> result = new List<Vector2Int>();
         for (int i = 0; i < directions.Length;i++)
         {
             Vector2Int newDes = current + directions[i];
@@ -109,10 +115,8 @@ public class BotRouter : MonoBehaviour
                 continue;
             if (traverseMap[newDes.y, newDes.x] != -1)
                 continue;
-            result.Add(newDes);
+            traverseQueue.Enqueue(newDes);
         }
-
-        return result;
     }
 
     private int GetBestValueFromAround(Vector2Int current)
@@ -173,9 +177,9 @@ public class BotRouter : MonoBehaviour
 
     private void Start()
     {
-        foreach(ParcelBot b in BoardData.instance.GetBots())
-        {
-            b.AssignNextParcelPoint(new Vector2Int(13,13));
-        }
+        //foreach(ParcelBot b in BoardData.instance.GetBots())
+        //{
+        //    b.AssignNextParcelPoint(new Vector2Int(10,10));
+        //}
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoardData))]
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class ParcelHoleGenerator : MonoBehaviour 
 {
     public ParcelHole prefab;

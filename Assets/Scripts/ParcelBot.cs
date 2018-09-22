@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ParcelBot : MonoBehaviour 
 {
+    public Transform parcelBox;
     private int id;
     private Vector2Int target;
     [SerializeField]
@@ -13,18 +14,23 @@ public class ParcelBot : MonoBehaviour
 
     private Queue<Vector2Int> nextTarget;
 
-    const float speed = 1f;
+    const float speed = 5f;
 
     private float r = 0;
 
-    IEnumerator Start()
+    void Start()
     {
-        yield return new WaitForSeconds(Random.Range(1f, 2f));
         StartCoroutine(Forever());
+    }
+
+    void Update()
+    {
+        parcelBox.gameObject.SetActive(IsSendingParcel());
     }
 
     IEnumerator Forever () 
     {
+        yield return new WaitForSeconds(Random.Range(0f, 2f));
         while (true)
         {
             if (current == nextStep)
@@ -33,6 +39,7 @@ public class ParcelBot : MonoBehaviour
                 {
                     if (nextTarget == null || nextTarget.Count == 0)
                     {
+                        yield return new WaitForSeconds(0.1f);
                         continue;
                     }
                     else
@@ -42,19 +49,21 @@ public class ParcelBot : MonoBehaviour
                 }
                 else
                 {
-                    nextStep = BotRouter.instance.RequestNextStep(this);
+                    yield return StartCoroutine(BotRouter.instance.RequestNextStep(this));
                     if (nextStep == current)
-                        yield return new WaitForSeconds(Random.Range(1.5f,2.5f));
+                    {
+                        yield return new WaitForSeconds(0.5f);
+                    }
                 }
             }
 
-            r += Time.deltaTime;
+            r += Time.deltaTime*speed;
 
             Vector2 updatedPosition;
             if (r >= 1)
             {
-                r -= 1;
-                updatedPosition = Vector2.LerpUnclamped(current, nextStep, r + 1) * BoardData.gridScale;
+                r = 0;
+                updatedPosition = Vector2.Lerp(current, nextStep, 1) * BoardData.gridScale;
                 current = nextStep;
             }
             else
@@ -92,7 +101,9 @@ public class ParcelBot : MonoBehaviour
 
     public bool IsFree()
     {
-        return nextTarget.Count == 0;
+        if (nextStep == current && current == new Vector2Int(id, 0))
+            return true;
+        return false;
     }
 
     public Vector2Int GetNextStep()
@@ -113,5 +124,22 @@ public class ParcelBot : MonoBehaviour
     public Vector2Int GetCurrent()
     {
         return current;
+    }
+
+    public int GetId()
+    {
+        return id;
+    }
+
+    public bool IsSendingParcel()
+    {
+        if(target == new Vector2Int(id,0))
+            return false;
+        return true;
+    }
+
+    public int GetLoadCount()
+    {
+        return nextTarget.Count;
     }
 }
