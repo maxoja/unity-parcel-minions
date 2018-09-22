@@ -12,6 +12,7 @@ public class BoardData : MonoBehaviour
         WalkingArea
     }
 
+    public const int botNum = 10;
     public const int width = 14;
     public const int height = 14;
     public const float gridScale = 1;
