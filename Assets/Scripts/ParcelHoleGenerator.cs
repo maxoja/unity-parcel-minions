@@ -6,7 +6,6 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class ParcelHoleGenerator : MonoBehaviour 
 {
-    public bool a;
     public ParcelHole prefab;
     private List<ParcelHole> holes;
     private BoardData boardData = null;

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class BoardData : MonoBehaviour 
 {
-    enum CellType : int
+    static public BoardData instance = null;
+
+    public enum CellType : int
     {
         ParcelHole,
         ChargingArea,
@@ -33,15 +35,18 @@ public class BoardData : MonoBehaviour
         ".............." +
         "______________";
 
-    [SerializeField]
+    //[SerializeField]
     private CellType[,] cellMap = new CellType[height,width];
-    [SerializeField]
+    //[SerializeField]
     private int parcelHoleCount = 0;
-    [SerializeField]
+    //[SerializeField]
     private List<Vector2Int> parcelHolePositions;
+    //[SerializeField]
+    private List<ParcelBot> bots;
 
 	void Start () 
     {
+        instance = this;
         parcelHoleCount = 0;
         parcelHolePositions = new List<Vector2Int>();
 
@@ -78,5 +83,30 @@ public class BoardData : MonoBehaviour
     public List<Vector2Int> GetParcelHolePositions()
     {
         return new List<Vector2Int>(parcelHolePositions);
+    }
+
+    public CellType GetCellType(int i, int j)
+    {
+        return cellMap[i,j];
+    }
+
+    public void ClearAllBots()
+    {
+        foreach(ParcelBot b in bots)
+        {
+            if (b != null)
+                Destroy(b.gameObject);
+        }
+        bots.Clear();
+    }
+
+    public void AddBot(ParcelBot b)
+    {
+        bots.Add(b);
+    }
+
+    public List<ParcelBot> GetBots()
+    {
+        return new List<ParcelBot>(bots);
     }
 }

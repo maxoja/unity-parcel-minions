@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class ChargingArea : MonoBehaviour {
     //private bool[] slots = new bool[BoardData.botNum];
 
-    private void Awake()
-    {
+    //private void Awake()y
+    //{
         //for (int i = 0; i < slots.Length; i++)
             //slots[i] = false;
-    }
+    //}
 
-    void Update()
+    void Awake()
     {
         transform.localScale = new Vector2((BoardData.width) * BoardData.gridScale, BoardData.gridScale);
         transform.position = new Vector2((BoardData.width - 1) * BoardData.gridScale, 0) / 2;
