@@ -7,16 +7,17 @@ public class ParcelBot : MonoBehaviour
 {
     public Transform parcelBox;
     private int id;
+    [SerializeField]
     private Vector2Int target;
     [SerializeField]
     private Vector2Int current;
     [SerializeField]
     private Vector2Int nextStep;
 
-    private Queue<Vector2Int> nextTarget;
+    private Queue<Vector3Int> nextTarget;
     private Text textComp;
 
-    const float speed = 5f;
+    const float speed = 4f;
 
     private float r = 0;
 
@@ -52,7 +53,11 @@ public class ParcelBot : MonoBehaviour
                     }
                     else
                     {
-                        target = nextTarget.Dequeue();
+                        Vector3Int newTarget = nextTarget.Dequeue();
+                        target = new Vector2Int(newTarget.x, newTarget.y);
+
+                        if (newTarget.z != 0)
+                            textComp.text = newTarget.z.ToString();
                     }
                 }
                 else
@@ -87,7 +92,7 @@ public class ParcelBot : MonoBehaviour
     public void Initialize(int id)
     {
         this.id = id;
-        nextTarget = new Queue<Vector2Int>();
+        nextTarget = new Queue<Vector3Int>();
 
         current = new Vector2Int(id, 0);
         target = current;
@@ -98,8 +103,8 @@ public class ParcelBot : MonoBehaviour
 
     public void AssignNextParcelPoint(Vector2Int assignment, int holeId)
     {
-        nextTarget.Enqueue(assignment);
-        nextTarget.Enqueue(new Vector2Int(this.id, 0));
+        nextTarget.Enqueue(new Vector3Int(assignment.x,assignment.y,holeId));
+        nextTarget.Enqueue(new Vector3Int(this.id, 0, 0));
         textComp.text = holeId.ToString();
     }
 

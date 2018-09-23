@@ -118,13 +118,13 @@ public class BotRouter : MonoBehaviour
 
         for (int i = 0; i < directions.Length;i++)
         {
-            if (dist >= 5)
-            {
-                if (diff.y > 0 && directions[i] == Vector2Int.down)
-                    continue;
-                else if (diff.y < 0 && directions[i] == Vector2Int.up)
-                    continue;
-            }
+            //if (dist >= 5)
+            //{
+            //    if (diff.y > 0 && directions[i] == Vector2Int.down)
+            //        continue;
+            //    else if (diff.y < 0 && directions[i] == Vector2Int.up)
+            //        continue;
+            //}
             Vector2Int newDes = current + directions[i];
             if (newDes.x < 0 || newDes.y<0)
                 continue;
