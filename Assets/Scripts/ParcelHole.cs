@@ -67,7 +67,6 @@ public class ParcelHole : MonoBehaviour {
         if (availableBlocks.Count == 0)
             availableBlocks.Add(nearbyBlocks[Random.Range(0, 3)]);
 
-        print("assign " + availableBlocks[0].ToString());
         responsibleBot.AssignNextParcelPoint(availableBlocks[0]);
     }
 }

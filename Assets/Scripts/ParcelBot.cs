@@ -52,7 +52,7 @@ public class ParcelBot : MonoBehaviour
                     yield return StartCoroutine(BotRouter.instance.RequestNextStep(this));
                     if (nextStep == current)
                     {
-                        yield return new WaitForSeconds(0.5f);
+                        yield return new WaitForSeconds(0.1f);
                     }
                 }
             }

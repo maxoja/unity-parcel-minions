@@ -14,41 +14,42 @@ public class BoardData : MonoBehaviour
         WalkingArea
     }
 
-    public const int botNum = 8;
-    public const int width = 11;
-    public const int height = 11;
-    //public const int width = 14;
-    //public const int height = 14;
     public const float gridScale = 1.2f;
 
-    private const string boardObjectStringMap =
-        "..........." +
-        "..........." +
-        "..x..x..x.." +
-        "..........." +
-        "..........." +
-        "..x..x..x.." +
-        "..........." +
-        "..........." +
-        "..x..x..x.." +
-        "..........." +
-        "___________";
-
+    //public const int botNum = 11;
+    //public const int width = 11;
+    //public const int height = 11;
     //private const string boardObjectStringMap =
-        //".............." +
-        //".............." +
-        //"..x..x..x..x.." +
-        //".............." +
-        //".............." +
-        //"..x..x..x..x.." +
-        //".............." +
-        //".............." +
-        //"..x..x..x..x.." +
-        //".............." +
-        //".............." +
-        //"..x..x..x..x.." +
-        //".............." +
-        //"______________";
+        //"..........." +
+        //"..........." +
+        //"..x..x..x.." +
+        //"..........." +
+        //"..........." +
+        //"..x..x..x.." +
+        //"..........." +
+        //"..........." +
+        //"..x..x..x.." +
+        //"..........." +
+        //"___________";
+
+    public const int botNum = 14;
+    public const int width = 14;
+    public const int height = 14;
+    private const string boardObjectStringMap =
+        ".............." +
+        ".............." +
+        "..x..x..x..x.." +
+        ".............." +
+        ".............." +
+        "..x..x..x..x.." +
+        ".............." +
+        ".............." +
+        "..x..x..x..x.." +
+        ".............." +
+        ".............." +
+        "..x..x..x..x.." +
+        ".............." +
+        "______________";
 
     //[SerializeField]
     private CellType[,] cellMap = new CellType[height,width];
