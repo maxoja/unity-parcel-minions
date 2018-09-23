@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ParcelHole : MonoBehaviour {
-    private int x, y;
+    private int x, y, id;
     private List<Vector2Int> nearbyBlocks = new List<Vector2Int>();
+    private Text textComp;
 
     public int GetX()
     {
@@ -21,8 +23,10 @@ public class ParcelHole : MonoBehaviour {
         return new Vector2Int(x, y);
     }
 
-    public void SetPosition(Vector2Int pos)
+    public void Initialize(Vector2Int pos, int id)
     {
+        this.id = id;
+        textComp.text = id.ToString();
         x = pos.x;
         y = pos.y;
         nearbyBlocks.Clear();
@@ -32,6 +36,10 @@ public class ParcelHole : MonoBehaviour {
         nearbyBlocks.Add(pos + Vector2Int.down);
     }
 
+    private void Awake()
+    {
+        textComp = GetComponentInChildren<Text>();
+    }
     private void Update()
     {
         transform.localScale = Vector3.one * BoardData.gridScale;
@@ -67,6 +75,6 @@ public class ParcelHole : MonoBehaviour {
         if (availableBlocks.Count == 0)
             availableBlocks.Add(nearbyBlocks[Random.Range(0, 3)]);
 
-        responsibleBot.AssignNextParcelPoint(availableBlocks[0]);
+        responsibleBot.AssignNextParcelPoint(availableBlocks[0],id);
     }
 }

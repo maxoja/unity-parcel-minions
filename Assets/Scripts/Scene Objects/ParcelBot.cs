@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ParcelBot : MonoBehaviour 
 {
@@ -13,10 +14,16 @@ public class ParcelBot : MonoBehaviour
     private Vector2Int nextStep;
 
     private Queue<Vector2Int> nextTarget;
+    private Text textComp;
 
     const float speed = 5f;
 
     private float r = 0;
+
+    private void Awake()
+    {
+        textComp = GetComponentInChildren<Text>();
+    }
 
     void Start()
     {
@@ -26,6 +33,7 @@ public class ParcelBot : MonoBehaviour
     void Update()
     {
         parcelBox.gameObject.SetActive(IsSendingParcel());
+        textComp.gameObject.SetActive(IsSendingParcel());
     }
 
     IEnumerator Forever () 
@@ -52,7 +60,7 @@ public class ParcelBot : MonoBehaviour
                     yield return StartCoroutine(BotRouter.instance.RequestNextStep(this));
                     if (nextStep == current)
                     {
-                        yield return new WaitForSeconds(0.1f);
+                        yield return new WaitForSeconds(Random.Range(0.1f,0.2f));
                     }
                 }
             }
@@ -88,10 +96,11 @@ public class ParcelBot : MonoBehaviour
         transform.position = new Vector2(current.x,current.y) * BoardData.gridScale;
     }
 
-    public void AssignNextParcelPoint(Vector2Int assignment)
+    public void AssignNextParcelPoint(Vector2Int assignment, int holeId)
     {
         nextTarget.Enqueue(assignment);
         nextTarget.Enqueue(new Vector2Int(this.id, 0));
+        textComp.text = holeId.ToString();
     }
 
     //private IEnumerator ActuallyAssign(Vector2Int assignment)

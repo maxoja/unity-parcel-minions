@@ -22,7 +22,7 @@ public class ParcelHoleGenerator : MonoBehaviour
 
         foreach(Vector2Int p in boardData.GetParcelHolePositions())
         {
-            holes.Add(CreateParcelHole(p));   
+            holes.Add(CreateParcelHole(p));
         }
     }
 
@@ -30,7 +30,7 @@ public class ParcelHoleGenerator : MonoBehaviour
     {
         ParcelHole hole = Instantiate(prefab) as ParcelHole;
         hole.transform.parent = transform;
-        hole.SetPosition(pos);
+        hole.Initialize(pos,holes.Count+1);
         return hole;
     }
 }
