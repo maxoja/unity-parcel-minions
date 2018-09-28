@@ -17,7 +17,7 @@ public class ParcelBot : MonoBehaviour
     private Queue<Vector3Int> nextTarget;
     private Text textComp;
 
-    const float speed = 4f;
+    const float steppingSpeed = 4f;
 
     private float r = 0;
 
@@ -33,6 +33,7 @@ public class ParcelBot : MonoBehaviour
 
     void Update()
     {
+        //show parcel box if the bot is moving toward parcel holes
         parcelBox.gameObject.SetActive(IsSendingParcel());
         textComp.gameObject.SetActive(IsSendingParcel());
     }
@@ -42,6 +43,8 @@ public class ParcelBot : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(0f, 2f));
         while (true)
         {
+            //this bot reached the next block
+            //then request the new next block from BotRouter
             if (current == nextStep)
             {
                 if (current == target)
@@ -70,37 +73,55 @@ public class ParcelBot : MonoBehaviour
                 }
             }
 
-            r += Time.deltaTime*speed;
+            //ajust the value of r representing its progress toward the block
+            //the value in r will be in the range of 0.0 to 1.0
+            r += Time.deltaTime*steppingSpeed;
 
             Vector2 updatedPosition;
             if (r >= 1)
             {
+                //r >= 1 means the bot should reached the target block by now
+
+                //reset r
                 r = 0;
-                updatedPosition = Vector2.Lerp(current, nextStep, 1) * BoardData.gridScale;
+                //set updating position to target block position
+                updatedPosition = new Vector2(nextStep.x, nextStep.y) * BoardData.gridScale;
+                //update current block position
                 current = nextStep;
             }
             else
             {
+                //calculation proper position for this bot based on its progress r
                 updatedPosition = Vector2.Lerp(current, nextStep, r) * BoardData.gridScale;
             }
 
+            //assign newly calculated position
             transform.position = updatedPosition;
             yield return null;
         }
 	}
 
+    //this will be call after a bot was created
     public void Initialize(int id)
     {
+        //set id
         this.id = id;
+        //initialize Queue
         nextTarget = new Queue<Vector3Int>();
 
+        //set beginning position
         current = new Vector2Int(id, 0);
+
+        //set initial values for calculation
         target = current;
         nextStep = current;
         r = 0;
+
+        //assign its proper starting position
         transform.position = new Vector2(current.x,current.y) * BoardData.gridScale;
     }
 
+    //call this function to make a bot move to a point on the board
     public void AssignNextParcelPoint(Vector2Int assignment, int holeId)
     {
         nextTarget.Enqueue(new Vector3Int(assignment.x,assignment.y,holeId));
@@ -152,6 +173,7 @@ public class ParcelBot : MonoBehaviour
         return true;
     }
 
+    //check how many parcels this bot need to carry
     public int GetLoadCount()
     {
         return nextTarget.Count;
