@@ -23,12 +23,16 @@ public class ParcelHole : MonoBehaviour {
         return new Vector2Int(x, y);
     }
 
+    //this will be called after a hole is created
     public void Initialize(Vector2Int pos, int id)
     {
+        //set id, position, text
         this.id = id;
         textComp.text = id.ToString();
         x = pos.x;
         y = pos.y;
+
+        //generate nearby (left right up down) block position
         nearbyBlocks.Clear();
         nearbyBlocks.Add(pos + Vector2Int.left);
         nearbyBlocks.Add(pos + Vector2Int.right);
@@ -46,8 +50,12 @@ public class ParcelHole : MonoBehaviour {
         transform.position = new Vector2(x, y) * BoardData.gridScale;
     }
 
+    //this method will be called when clicked
     private void OnMouseDown()
     {
+        //find the bot with the minimum load
+        //find the block with minimum load
+
         ParcelBot responsibleBot = null;
         List<ParcelBot> allBots = BoardData.instance.GetBots();
         List<Vector2Int> availableBlocks = new List<Vector2Int>(nearbyBlocks);
@@ -69,12 +77,16 @@ public class ParcelHole : MonoBehaviour {
                 availableBlocks.Remove(bot.GetTarget());
         }
 
+        //forget what this condition does but don't dare to remove it ;-)
         if (responsibleBot == null)
             responsibleBot = minBot;
 
+        //if there is no available nearby block that is currently free
+        //just pick one randomly
         if (availableBlocks.Count == 0)
             availableBlocks.Add(nearbyBlocks[Random.Range(0, 3)]);
 
+        //assign the bot to move to the nearby block with minimum load
         responsibleBot.AssignNextParcelPoint(availableBlocks[0],id);
     }
 }
