@@ -9,6 +9,8 @@ public class ParcelBotGenerator : MonoBehaviour {
     public void Start()
     {
         BoardData.instance.ClearAllBots();
+
+        //create bots object. the amount is according to BoardData.botNum
         for (int i = 0; i < BoardData.botNum;i++)
         {
             ParcelBot bot = Instantiate(prefab) as ParcelBot;

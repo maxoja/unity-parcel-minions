@@ -15,11 +15,13 @@ public class ParcelHoleGenerator : MonoBehaviour
         if (boardData == null)
             boardData = GetComponent<BoardData>();
 
+        //clear previous holes by destroying it
         foreach (ParcelHole hole in GetComponentsInChildren<ParcelHole>())
             DestroyImmediate(hole.gameObject);
         
         holes = new List<ParcelHole>();
 
+        //create new holes based on staticMap configuration in BoardData
         foreach(Vector2Int p in boardData.GetParcelHolePositions())
         {
             holes.Add(CreateParcelHole(p));
@@ -28,6 +30,7 @@ public class ParcelHoleGenerator : MonoBehaviour
 
     private ParcelHole CreateParcelHole(Vector2Int pos)
     {
+        //create new hole object and set position and id
         ParcelHole hole = Instantiate(prefab) as ParcelHole;
         hole.transform.parent = transform;
         hole.Initialize(pos,holes.Count+1);
