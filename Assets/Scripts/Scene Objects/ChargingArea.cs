@@ -14,6 +14,7 @@ public class ChargingArea : MonoBehaviour {
 
     void Awake()
     {
+        //automatically adjust its size and postion based on configurations in BoardData
         transform.localScale = new Vector2((BoardData.width) * BoardData.gridScale, BoardData.gridScale);
         transform.position = new Vector2((BoardData.width - 1) * BoardData.gridScale, 0) / 2;
     }
