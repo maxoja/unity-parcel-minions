@@ -72,23 +72,22 @@ public class BoardData : MonoBehaviour
         "..x..x..x..x..x.." +
         "................." +
         "_________________";
-
-    //[SerializeField]
+    
     private CellType[,] cellMap = new CellType[height,width];
-    //[SerializeField]
     private int parcelHoleCount = 0;
-    //[SerializeField]
     private List<Vector2Int> parcelHolePositions;
-    //[SerializeField]
     private List<ParcelBot> bots;
 
 	void Start () 
     {
-        instance = this;
+        instance = this; // make this component accessible from anywhere
+
+        //initialize values
         parcelHoleCount = 0;
         parcelHolePositions = new List<Vector2Int>();
         bots = new List<ParcelBot>();
 
+        //transform map string to map of enums
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
@@ -116,16 +115,19 @@ public class BoardData : MonoBehaviour
 	
     public int GetParcelHoleCount()
     {
+        //return how many parcel holes we have
         return parcelHoleCount;
     }
 
     public List<Vector2Int> GetParcelHolePositions()
     {
+        //return a duplicated list of parcel hole positions
         return new List<Vector2Int>(parcelHolePositions);
     }
 
     public CellType GetCellType(int i, int j)
     {
+        //get the value of map cell at y=i x=j 
         return cellMap[i,j];
     }
 
@@ -141,11 +143,13 @@ public class BoardData : MonoBehaviour
 
     public void AddBot(ParcelBot b)
     {
+        //add new bot b to bot list
         bots.Add(b);
     }
 
     public List<ParcelBot> GetBots()
     {
+        //return a duplicated list of existing bots and return
         return new List<ParcelBot>(bots);
     }
 }
