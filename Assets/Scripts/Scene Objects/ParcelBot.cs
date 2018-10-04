@@ -15,16 +15,12 @@ public class ParcelBot : MonoBehaviour
     private Vector2Int nextStep;
 
     private Queue<Vector3Int> nextTarget;
-    private Text textComp;
+    [SerializeField]
+    private Text idText, posText;
 
     const float steppingSpeed = 4f;
 
     private float r = 0;
-
-    private void Awake()
-    {
-        textComp = GetComponentInChildren<Text>();
-    }
 
     void Start()
     {
@@ -35,7 +31,8 @@ public class ParcelBot : MonoBehaviour
     {
         //show parcel box if the bot is moving toward parcel holes
         parcelBox.gameObject.SetActive(IsSendingParcel());
-        textComp.gameObject.SetActive(IsSendingParcel());
+        idText.gameObject.SetActive(IsSendingParcel());
+        posText.text = current.x.ToString() + "-" + current.y.ToString();
     }
 
     IEnumerator Forever () 
@@ -56,11 +53,14 @@ public class ParcelBot : MonoBehaviour
                     }
                     else
                     {
+                        if (nextTarget.Count % 2 == 1)
+                            yield return new WaitForSeconds(2);
+                        
                         Vector3Int newTarget = nextTarget.Dequeue();
                         target = new Vector2Int(newTarget.x, newTarget.y);
 
                         if (newTarget.z != 0)
-                            textComp.text = newTarget.z.ToString();
+                            idText.text = newTarget.z.ToString();
                     }
                 }
                 else
@@ -126,7 +126,7 @@ public class ParcelBot : MonoBehaviour
     {
         nextTarget.Enqueue(new Vector3Int(assignment.x,assignment.y,holeId));
         nextTarget.Enqueue(new Vector3Int(this.id, 0, 0));
-        textComp.text = holeId.ToString();
+        idText.text = holeId.ToString();
     }
 
     //private IEnumerator ActuallyAssign(Vector2Int assignment)
