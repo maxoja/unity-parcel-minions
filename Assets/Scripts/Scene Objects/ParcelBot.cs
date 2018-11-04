@@ -79,6 +79,11 @@ public class ParcelBot : MonoBehaviour
                 else
                 {
                     yield return StartCoroutine(BotRouter.instance.RequestNextStep(this));
+
+                    if (current == new Vector2Int(id, 0))
+                        while (battery.LowBattery())
+                            yield return new WaitForSeconds(1);
+                    
                     if (nextStep == current)
                     {
                         yield return new WaitForSeconds(Random.Range(0.1f, 0.2f));
