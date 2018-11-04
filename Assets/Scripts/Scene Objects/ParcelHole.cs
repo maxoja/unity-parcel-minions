@@ -64,9 +64,19 @@ public class ParcelHole : MonoBehaviour {
         ParcelBot minBot = null;
         foreach(ParcelBot bot in allBots)
         {
-            if (bot.GetLoadCount() < minLoad)
+            //int load = bot.GetLoadCount();
+            int load = bot.GetLoadCount() + Mathf.Abs(bot.GetId() - x) + Mathf.Abs(y);
+            if (bot.IsFree() == false) load += 100;
+            //float load = (float)(bot.GetLoadCount() + Mathf.Abs(bot.GetCurrent().x - x) + Mathf.Abs(bot.GetCurrent().y - y));
+            //print(bot.GetCurrent());
+            //print(x +" " + y);
+            //print(load);
+            //print("");
+
+            if (load < minLoad)
             {
-                minLoad = bot.GetLoadCount();
+                responsibleBot = bot;
+                minLoad = load;
                 minBot = bot;
             }
 
@@ -80,6 +90,10 @@ public class ParcelHole : MonoBehaviour {
         //forget what this condition does but don't dare to remove it ;-)
         if (responsibleBot == null)
             responsibleBot = minBot;
+
+        //no bot with enough battery available
+        if (responsibleBot == null)
+            return;
 
         //if there is no available nearby block that is currently free
         //just pick one randomly
